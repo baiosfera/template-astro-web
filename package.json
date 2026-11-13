@@ -1,11 +1,16 @@
 {
   "name": "@astrobranding/astrobranding",
   "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "type": "module",
   "scripts": {
     "dev": "astro dev --port 3000 --host 0.0.0.0",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "node --test packages/engine/src/*.test.mjs",
     "start": "bun run ./dist/server/entry.mjs"
   },
   "dependencies": {

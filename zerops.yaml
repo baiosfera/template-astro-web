@@ -1,7 +1,7 @@
 zerops:
   - setup: web
     build:
-      base: ubuntu/bun@1.3
+      base: ubuntu/bun@1.4
       buildCommands:
         - bun install
         - bun run build
@@ -10,7 +10,7 @@ zerops:
       cache:
         - node_modules
     run:
-      base: ubuntu/bun@1.3
+      base: ubuntu/bun@1.4
       ports:
         - port: 4321
           httpSupport: true
