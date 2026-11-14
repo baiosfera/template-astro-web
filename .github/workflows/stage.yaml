@@ -1,0 +1,20 @@
+name: Deploy Staging to Zerops
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+  deploy-stage:
+    if: ${{ github.repository != 'baiosfera/template-astro-web' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Zerops Staging Service
+        uses: zeropsio/actions@v1.0.2
+        with:
+          access-token: ${{ secrets.ZEROPS_TOKEN }}
+          service-id: ${{ secrets.ZEROPS_STAGE_SERVICE_ID }}

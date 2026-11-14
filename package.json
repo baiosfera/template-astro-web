@@ -7,7 +7,7 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "astro dev --port 3000 --host 0.0.0.0",
+    "dev": "astro dev --port 4321 --host 0.0.0.0",
     "build": "astro build",
     "preview": "astro preview",
     "test": "bun test packages/engine/src/*.test.mjs",
