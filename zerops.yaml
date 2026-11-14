@@ -1,5 +1,30 @@
 zerops:
-  - setup: web
+  - setup: webdev
+    build:
+      base: ubuntu/bun@1.4
+      buildCommands:
+        - bun install
+        - bun run build
+      deployFiles:
+        - .
+      cache:
+        - node_modules
+    run:
+      base: ubuntu/bun@1.4
+      ports:
+        - port: 4321
+          httpSupport: true
+      envVariables:
+        HOST: "0.0.0.0"
+        PORT: "4321"
+        NODE_ENV: "development"
+      start: bun run ./dist/server/entry.mjs
+      healthCheck:
+        httpGet:
+          port: 4321
+          path: /
+
+  - setup: webprod
     build:
       base: ubuntu/bun@1.4
       buildCommands:
