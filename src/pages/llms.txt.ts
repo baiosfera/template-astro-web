@@ -1,16 +1,13 @@
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async () => {
-  const content = `# AstroBranding
-> Plataforma Soberana de Posicionamiento Arquetípico y Branding Integral en Zerops.
+  const siteName = process.env.PROJECT_NAME || "Web Platform";
+  const content = `# ${siteName}
+> Base web agnóstica sobre Astro 5 SSR, Hono y Bun.
 
-## Recursos Principales
-- [/docs](/docs): Documentación técnica del ecosistema y microservicios
-- [/fase0](/fase0): Diagnóstico arquetípico e ingreso asistido
-- [/checkout](/checkout): Pasarelas de pago y embudo de conversión
-
-## Opcional
-- [/desk/studio](/desk/studio): Preview interactivo de diseño y tokens
+## Endpoints
+- [/](/) : Página principal del proyecto
+- [/health](/health) : Estado del servicio en JSON
 `;
 
   return new Response(content, {

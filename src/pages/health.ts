@@ -4,7 +4,7 @@ export const GET: APIRoute = async () => {
   return new Response(
     JSON.stringify({
       status: "ok",
-      service: "astrobranding",
+      service: process.env.PROJECT_NAME || process.env.ZEROPS_SERVICE_HOSTNAME || "web",
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),
     }),

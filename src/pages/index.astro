@@ -1,82 +1,68 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteName = process.env.PROJECT_NAME || "Web Platform";
+const envMode = process.env.NODE_ENV || "development";
 ---
 
-<BaseLayout title="AstroBranding — Posicionamiento Arquetípico & Malla Soberana Zerops">
+<BaseLayout title={`${siteName} — Base Web Agnóstica`}>
   <div class="relative overflow-hidden">
-    <!-- Navbar -->
-    <nav class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-neutral-800/80">
+    <nav class="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between border-b border-neutral-800/80">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20">
-          Ω
+        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-indigo-500/20">
+          {siteName.slice(0, 2).toUpperCase()}
         </div>
-        <span class="font-extrabold text-lg tracking-tight">AstroBranding</span>
+        <span class="font-bold text-lg tracking-tight">{siteName}</span>
       </div>
-      <div class="flex items-center gap-4 text-sm font-medium">
-        <a href="/docs" class="text-neutral-400 hover:text-white transition-colors">Docs</a>
-        <a href="/gratis" class="text-neutral-400 hover:text-white transition-colors">Carta Gratis</a>
-        <a href="/app" class="text-indigo-400 hover:text-indigo-300 transition-colors">Dossier</a>
-        <a href="/desk" class="text-emerald-400 hover:text-emerald-300 font-mono text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded">/desk</a>
-        <a href="/checkout" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md shadow-indigo-600/20 transition-all">
-          Iniciar Funnel ($1+)
+      <div class="flex items-center gap-4 text-xs font-mono">
+        <span class="px-2.5 py-1 rounded bg-neutral-900 border border-neutral-800 text-neutral-300">
+          env:{envMode}
+        </span>
+        <a href="/health" class="text-emerald-400 hover:text-emerald-300 transition-colors">
+          /health
         </a>
       </div>
     </nav>
 
-    <!-- Hero -->
-    <main class="max-w-5xl mx-auto px-6 pt-20 pb-28 text-center">
+    <main class="max-w-4xl mx-auto px-6 pt-20 pb-24 text-center">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs font-semibold mb-6">
-        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-        Malla Soberana de 10 Servicios en Zerops Incus LXC
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        Runtime Activo · Astro 5 SSR + Bun (:4321)
       </div>
-      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight sm:leading-none">
-        Decodificá tu Arquetipo.<br />
-        <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-rose-400 bg-clip-text text-transparent">
-          Monetizá tu Verdad Esencial.
+
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+        Base Web Agnóstica<br />
+        <span class="bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400 bg-clip-text text-transparent">
+          Lista para Hidratación
         </span>
       </h1>
-      <p class="mt-6 text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-        Arquitectura de marca basada en la síntesis de 8 tradiciones astronómicas de alta precisión, orquestada sobre una infraestructura soberana de ultra-baja latencia en Bun, Astro 5 SSR y Hono.
+
+      <p class="mt-6 text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+        Este primer despliegue provee un núcleo neutro y verificado para {siteName}. La identidad visual, el catálogo de productos o servicios, y los flujos comerciales se hidratan dinámicamente en la siguiente fase.
       </p>
 
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a
-          href="/gratis"
-          class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-neutral-950 font-bold text-sm hover:bg-neutral-200 transition-all shadow-lg shadow-white/10"
-        >
-          Calcular Carta con Doble Opt-In
-        </a>
-        <a
-          href="/checkout"
-          class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-200 font-bold text-sm hover:bg-neutral-800 transition-all"
-        >
-          Explorar Funnel Comercial (PWYW $1+)
-        </a>
-      </div>
-
-      <!-- Feature Grid -->
-      <section class="mt-28 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+      <section class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
         <div class="bg-neutral-900/60 border border-neutral-800 p-6 rounded-2xl">
-          <span class="text-xs font-mono uppercase text-indigo-400 block mb-2 font-semibold">01 / Fullstack Unificado</span>
-          <h3 class="font-bold text-lg text-neutral-100 mb-2">Astro 5 SSR + Hono RPC</h3>
+          <span class="text-xs font-mono uppercase text-indigo-400 block mb-2 font-semibold">01 / SSR + Bun</span>
+          <h3 class="font-bold text-base text-neutral-100 mb-2">Puerto Unificado 4321</h3>
           <p class="text-xs text-neutral-400 leading-relaxed">
-            Un solo puerto 3000 en Bun. Páginas SSR con TTFB &lt;10ms, islas interactivas React 19 y endpoints REST con contratos Zod 4 compartidos.
+            Astro 5 en modo servidor con islas React 19 y Tailwind CSS v4 listo para cualquier vertical.
           </p>
         </div>
 
         <div class="bg-neutral-900/60 border border-neutral-800 p-6 rounded-2xl">
-          <span class="text-xs font-mono uppercase text-emerald-400 block mb-2 font-semibold">02 / Doble Audiencia</span>
-          <h3 class="font-bold text-lg text-neutral-100 mb-2">Dossier /app vs Cockpit /desk</h3>
+          <span class="text-xs font-mono uppercase text-emerald-400 block mb-2 font-semibold">02 / API &amp; Contratos</span>
+          <h3 class="font-bold text-base text-neutral-100 mb-2">Hono + Zod</h3>
           <p class="text-xs text-neutral-400 leading-relaxed">
-            Separación estricta de lenguajes: narrativa visual y ruedas SVG para el cliente; mapa de defensas y preguntas tácticas para el mentor.
+            Rutas API tipadas y validación de esquemas desacopladas de marca o modelo de negocio.
           </p>
         </div>
 
         <div class="bg-neutral-900/60 border border-neutral-800 p-6 rounded-2xl">
-          <span class="text-xs font-mono uppercase text-amber-400 block mb-2 font-semibold">03 / Concurrencia & Outbox</span>
-          <h3 class="font-bold text-lg text-neutral-100 mb-2">PostgreSQL 18 UUIDv7 + BullMQ</h3>
+          <span class="text-xs font-mono uppercase text-amber-400 block mb-2 font-semibold">03 / Infraestructura</span>
+          <h3 class="font-bold text-base text-neutral-100 mb-2">Health &amp; Colas</h3>
           <p class="text-xs text-neutral-400 leading-relaxed">
-            Patrón Outbox transaccional para eventos críticos y BullMQ sobre Valkey 7.2 con dashboard en <code class="text-neutral-300">/admin/queues</code>.
+            Monitoreo en <code class="text-neutral-300">/health</code> y soporte para PostgreSQL, Valkey y BullMQ.
           </p>
         </div>
       </section>
