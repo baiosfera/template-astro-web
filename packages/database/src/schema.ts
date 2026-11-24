@@ -166,7 +166,7 @@ export const leads = pgTable(
 );
 
 /**
- * 7. Products & Variants (Catalina Glamur Activewear)
+ * 7. Products & Variants (E-Commerce Catalog)
  */
 export const products = pgTable(
   "products",
@@ -201,7 +201,7 @@ export const productVariants = pgTable("product_variants", {
 });
 
 /**
- * 8. Services (Catalina Glamur Aesthetics)
+ * 8. Services & Bookings (Consultations & Service Offerings)
  */
 export const services = pgTable(
   "services",

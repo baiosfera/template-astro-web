@@ -52,10 +52,4 @@ CREATE TABLE IF NOT EXISTS admin_sessions (
 CREATE INDEX IF NOT EXISTS admin_sessions_token_hash_idx ON admin_sessions (session_token_hash);
 CREATE INDEX IF NOT EXISTS admin_sessions_user_id_idx ON admin_sessions (user_id);
 
--- 5. Seed initial admin users
-INSERT INTO admin_users (name, telegram_user_id, role, is_active)
-VALUES 
-    ('Superadmin Developer', 8971481206, 'superadmin', 1),
-    ('Catalina Glamur Merchant', 888888, 'merchant', 1)
-ON CONFLICT (telegram_user_id) DO UPDATE 
-SET role = EXCLUDED.role, is_active = 1, updated_at = NOW();
+-- 5. Initial admin users are provisioned via seed.ts or ADMIN_TELEGRAM_IDS env var (never hardcoded per-brand).

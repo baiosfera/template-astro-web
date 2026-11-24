@@ -46,7 +46,7 @@ export type FrappeCustomer = z.infer<typeof FrappeCustomerSchema>;
 export type FrappeCustomerInput = z.input<typeof FrappeCustomerSchema>;
 
 export const FrappeSalesInvoiceItemSchema = z.object({
-  item_code: z.string().optional().default("ASTRO-REPORT"),
+  item_code: z.string().optional().default("DIGITAL-ORDER"),
   item_name: z.string(),
   qty: z.number().optional().default(1),
   rate: z.number(),
