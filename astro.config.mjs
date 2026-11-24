@@ -18,6 +18,9 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: true,
+    },
     ssr: {
       noExternal: ["@astrobranding/*"],
     },

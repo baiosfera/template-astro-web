@@ -1,28 +1,20 @@
 import { defineMiddleware } from "astro:middleware";
+import { classifyHost, resolveRequestHost } from "./lib/host";
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const host =
-    context.request.headers.get("x-forwarded-host") ||
-    context.request.headers.get("host") ||
-    "";
+  const hostname = resolveRequestHost(context.request.headers);
+  const info = classifyHost(hostname);
 
-  if (host.includes("staging.")) {
-    // Staging environment (sandbox credentials, test gateways)
-    context.locals.environment = "stage";
-    context.locals.isProduction = false;
-  } else if (
-    host.includes("zerops.app") ||
-    host.includes("localhost") ||
-    host.includes("127.0.0.1")
-  ) {
-    // Development / Ephemeral preview environment
-    context.locals.environment = "dev";
-    context.locals.isProduction = false;
-  } else {
-    // Production environment (live traffic, strict caching)
-    context.locals.environment = "prod";
-    context.locals.isProduction = true;
+  context.locals.hostname = info.hostname;
+  context.locals.environment = info.environment;
+  context.locals.isProduction = info.isProduction;
+  context.locals.isPreviewHost = info.isPreviewHost;
+
+  const response = await next();
+
+  if (info.isPreviewHost) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
 
-  return next();
+  return response;
 });
