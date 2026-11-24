@@ -10,7 +10,8 @@
     "dev": "astro dev --port 4321 --host 0.0.0.0",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "bun test packages/engine/src/*.test.mjs",
+    "test": "bun test tests/unit packages/engine/src/*.test.mjs packages/contracts/src/*.test.ts",
+    "test:e2e": "bunx playwright test tests/playwright",
     "start": "bun run ./dist/server/entry.mjs"
   },
   "dependencies": {

@@ -59,7 +59,7 @@ app.get("/health", async (c) => {
   return c.json({
     status: "ok",
     timestamp: new Date().toISOString(),
-    service: "astrobranding",
+    service: process.env.PROJECT_NAME || "web-runtime",
     uptime: process.uptime(),
     mesh: {
       database: dbOk ? "connected" : "standby",
@@ -76,7 +76,7 @@ app.get("/health", async (c) => {
 
 app.get("/", (c) => {
   return c.json({
-    name: "Zerops AstroBranding Sovereign Platform",
+    name: process.env.PROJECT_NAME || "Zerops Sovereign Web Platform",
     status: "active",
     healthCheck: "/health",
     queuesDashboard: "/admin/queues",
@@ -296,6 +296,10 @@ app.post("/api/webhooks/:gateway", async (c) => {
   }
 
   const event = paymentRegistry.verifyAndNormalizeWebhook(gateway, headers, body, rawBody);
+  if (!event.signatureValid) {
+    console.warn(`[Webhook] Rejected invalid signature for gateway ${gateway}`);
+    return c.json({ error: "Invalid webhook signature" }, 401);
+  }
   console.log(`[Webhook] Gateway ${gateway} received event ${event.event} for order ${event.orderId}`);
 
   if (event.event === "payment.approved") {
@@ -313,27 +317,34 @@ app.post("/api/webhooks/:gateway", async (c) => {
         status: "pending",
       });
 
-      // 3. Sync with Frappe CRM: Record Deal as Won
-      await frappe.createOrUpdateDeal({
-        lead: `CRM-LEAD-${event.orderId.substring(0, 8)}`,
-        deal_value: event.amount,
-        currency: event.currency,
-        status: "Won",
-        email: event.payerEmail,
-      });
-
-      // 4. Sync with ERPNext: Create Customer and Issue Sales Invoice
-      if (event.payerEmail) {
-        await frappe.createCustomer({
-          customer_name: event.payerEmail.split("@")[0] || "Client",
-          email_id: event.payerEmail,
-        });
-
-        await frappe.createSalesInvoice({
-          customer: event.payerEmail.split("@")[0] || "Client",
+      // 3. Optional Frappe CRM & ERPNext sync (strictly behind ERPNEXT_SYNC_ENABLED=true)
+      if (process.env.ERPNEXT_SYNC_ENABLED === "true") {
+        await frappe.createOrUpdateDeal({
+          lead: `CRM-LEAD-${event.orderId.substring(0, 8)}`,
+          deal_value: event.amount,
           currency: event.currency,
-          items: [{ item_name: "AstroBranding Report", rate: event.amount, amount: event.amount, qty: 1, item_code: "ASTRO-REPORT" }],
+          status: "Won",
+          email: event.payerEmail,
         });
+
+        if (event.payerEmail) {
+          await frappe.createCustomer({
+            customer_name: event.payerEmail.split("@")[0] || "Client",
+            email_id: event.payerEmail,
+          });
+
+          await frappe.createSalesInvoice({
+            customer: event.payerEmail.split("@")[0] || "Client",
+            currency: event.currency,
+            items: [{
+              item_name: String(event.rawPayload?.item_name || "Digital Order"),
+              rate: event.amount,
+              amount: event.amount,
+              qty: 1,
+              item_code: String(event.rawPayload?.item_code || "DIGITAL-ORDER"),
+            }],
+          });
+        }
       }
     } catch (postErr) {
       console.error("[Webhook] Error in post-payment processing:", postErr);
@@ -353,7 +364,7 @@ app.get("/api/frappe/status", async (c) => {
 initWorkers();
 
 const port = Number(process.env.PORT || 3000);
-console.log(`[AstroBranding] Sovereign Hono Server running on port ${port}`);
+console.log(`[Server] Sovereign Hono Server running on port ${port}`);
 
 export { app };
 export type AppType = typeof app;
