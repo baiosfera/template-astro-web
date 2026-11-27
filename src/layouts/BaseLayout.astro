@@ -2,6 +2,10 @@
 interface Props {
   title?: string;
   description?: string;
+  brandSlug?: string;
+  robots?: string;
+  canonicalUrl?: string;
+  lang?: string;
 }
 
 const siteName = process.env.PROJECT_NAME || "Web Platform";
@@ -9,17 +13,23 @@ const siteName = process.env.PROJECT_NAME || "Web Platform";
 const {
   title = `${siteName} — Astro 5 SSR Runtime`,
   description = "Agnostic fullstack runtime on Astro 5 SSR, Hono RPC, React 19, and Bun.",
+  brandSlug,
+  robots,
+  canonicalUrl,
+  lang = "es",
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="dark">
+<html lang={lang} class="dark" data-brand={brandSlug}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -27,6 +37,12 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:rounded focus:bg-neutral-900 focus:text-white"
+    >
+      Saltar al contenido principal
+    </a>
     <slot />
   </body>
 </html>

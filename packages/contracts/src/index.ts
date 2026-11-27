@@ -15,3 +15,4 @@ export * from "./meta-ads";
 export * from "./presence";
 export * from "./offerings";
 export * from "./telemetry";
+export * from "./campaigns";

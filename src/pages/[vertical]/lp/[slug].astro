@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import InteractiveProofCalculator from "../../../components/InteractiveProofCalculator.astro";
+import { loadCampaignLanding } from "../../../lib/campaigns";
+
+const { vertical = "", slug = "" } = Astro.params;
+const campaign = loadCampaignLanding(vertical, slug);
+
+if (!campaign) {
+  return new Response("Campaign not found", { status: 404 });
+}
+
+Astro.response.headers.set("X-Robots-Tag", campaign.robots);
+const siteName = process.env.PROJECT_NAME || campaign.brand_slug;
+---
+
+<BaseLayout
+  title={`${campaign.hero_h1} | ${siteName}`}
+  description={campaign.hero_subheadline}
+  brandSlug={campaign.brand_slug}
+  robots={campaign.robots}
+>
+  <main
+    id="main-content"
+    data-view-content-allowed={String(campaign.view_content_allowed)}
+    data-campaign-slug={campaign.campaign_slug}
+    data-vertical-slug={campaign.vertical_slug}
+    data-campaign-tag={campaign.wa_email_campaign_tag}
+    class="max-w-5xl mx-auto px-6 py-12 sm:py-16 space-y-12"
+  >
+    <header class="flex items-center justify-between border-b border-neutral-800/80 pb-5">
+      <span class="font-semibold tracking-tight text-neutral-100">{siteName}</span>
+      <a
+        href={campaign.primary_cta_href}
+        data-preserve-utms
+        class="rounded-lg px-4 py-2 text-xs font-semibold bg-[var(--brand-primary,#6366f1)] text-[var(--brand-on-primary,#ffffff)]"
+      >
+        {campaign.primary_cta_label}
+      </a>
+    </header>
+
+    <section class="space-y-6">
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white">
+        {campaign.hero_h1}
+      </h1>
+      <p class="text-base sm:text-lg text-neutral-300 max-w-3xl leading-relaxed">
+        {campaign.hero_subheadline}
+      </p>
+      <div class="pt-2">
+        <a
+          href={campaign.primary_cta_href}
+          data-preserve-utms
+          class="inline-flex items-center justify-center rounded-lg px-6 py-3.5 text-sm font-semibold bg-[var(--brand-primary,#6366f1)] text-[var(--brand-on-primary,#ffffff)]"
+        >
+          {campaign.primary_cta_label}
+        </a>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {campaign.contrarian_proof_points.map((point) => (
+        <div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5 text-sm text-neutral-200 leading-relaxed">
+          {point}
+        </div>
+      ))}
+    </section>
+
+    <InteractiveProofCalculator
+      spec={campaign.lead_magnet}
+      ctaHref={campaign.primary_cta_href}
+      ctaLabel={campaign.primary_cta_label}
+    />
+
+    {campaign.faq_items.length > 0 && (
+      <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-white">Preguntas frecuentes</h2>
+        <div class="space-y-3">
+          {campaign.faq_items.map((faq) => (
+            <details class="rounded-xl border border-neutral-800 bg-neutral-900/50 p-4">
+              <summary class="cursor-pointer font-medium text-neutral-100">{faq.question}</summary>
+              <p class="mt-2 text-sm text-neutral-300 leading-relaxed">{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+
+  <script is:inline>
+    (() => {
+      const current = new URLSearchParams(window.location.search);
+      if ([...current.keys()].length === 0) return;
+      for (const anchor of document.querySelectorAll("a[data-preserve-utms]")) {
+        try {
+          const target = new URL(anchor.getAttribute("href") || "/", window.location.origin);
+          for (const [k, v] of current.entries()) {
+            if (!target.searchParams.has(k)) target.searchParams.set(k, v);
+          }
+          anchor.setAttribute("href", target.pathname + target.search + target.hash);
+        } catch {}
+      }
+    })();
+  </script>
+</BaseLayout>
